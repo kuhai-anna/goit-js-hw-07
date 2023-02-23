@@ -38,7 +38,7 @@ function onImageClick(e) {
 		return;
 	}
 	createModalImg(e).show();
-	addEventListener('keydown', onEscapePress);
+	onOpenModal();
 }
 
 // Створення модального вікна з відповідним зображенням
@@ -54,10 +54,22 @@ function onEscapePress(e) {
 		return;
 	}
 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
+	onCloseModal();
+}
+
+// Додавання обробника подій після відкриття модального вікна
+function onOpenModal() {
+	addEventListener('keydown', onEscapePress);
+}
+
+// Видалення обробника подій після закриття модального вікна
+function onCloseModal() {
 	removeEventListener('keydown', onEscapePress);
 }
 
 // Реалізація лінивого завантаження
+
+// Віріант 2, працює
 
 // // Відкриття модалки
 // function onImageClick(e) {
@@ -69,25 +81,34 @@ function onEscapePress(e) {
 // 		return;
 // 	}
 
-// 	createModalImg(e);
+// 	createModalImg(e).show();
 // }
 
-// let instance;
+// let modalEl;
 
 // function createModalImg(e) {
-// 	instance = basicLightbox.create(
-// 		`<img src="${e.target.dataset.source}" width="800" height="600">`,
-// 		{
-// 			onShow: () => {
-// 				addEventListener('keydown', onEscapePress);
-// 			},
+// 	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
+// 		onShow: () => {
+// 			addEventListener('keydown', onEscapePress);
+// 		},
 
-// 			onClose: () => {
-// 				removeEventListener('keydown', onEscapePress);
-// 			},
-// 		}
-// 	);
-// 	instance.show();
+// 		onClose: () => {
+// 			removeEventListener('keydown', onEscapePress);
+// 		},
+// 	});
+// 	// modalEl = basicLightbox.create(
+// 	// 	`<img src="${e.target.dataset.source}" width="800" height="600">`,
+// 	// 	{
+// 	// 		onShow: () => {
+// 	// 			addEventListener('keydown', onEscapePress);
+// 	// 		},
+
+// 	// 		onClose: () => {
+// 	// 			removeEventListener('keydown', onEscapePress);
+// 	// 		},
+// 	// 	}
+// 	// );
+// 	// modalEl.show();
 // }
 
 // // Закриття модалки натисканням Escape
@@ -95,7 +116,43 @@ function onEscapePress(e) {
 // 	if (e.code !== 'Escape') {
 // 		return;
 // 	}
-// 	instance.close();
+// 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
+// 	// createModalImg(e).close();
 // }
 
-// // Реалізація лінивого завантаження
+// Віріант 3, не працює
+
+// Відкриття модалки
+// function onImageClick(e) {
+// 	e.preventDefault();
+
+// 	const isImageEl = e.target.classList.contains('gallery__image');
+
+// 	if (!isImageEl) {
+// 		return;
+// 	}
+
+// 	createModalImg(e).show();
+// }
+
+// let modalEl;
+
+// function createModalImg(e) {
+// 	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
+// 		onShow: () => {
+// 			addEventListener('keydown', onEscapePress);
+// 		},
+
+// 		onClose: () => {
+// 			removeEventListener('keydown', onEscapePress);
+// 		},
+// 	});
+// }
+
+// // Закриття модалки натисканням Escape
+// function onEscapePress(e) {
+// 	if (e.code !== 'Escape') {
+// 		return;
+// 	}
+// 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
+// }
