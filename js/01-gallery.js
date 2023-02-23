@@ -38,14 +38,19 @@ function onImageClick(e) {
 		return;
 	}
 	createModalImg(e).show();
-	onOpenModal();
 }
 
 // Створення модального вікна з відповідним зображенням
 function createModalImg(e) {
-	return basicLightbox.create(`
-    <img src="${e.target.dataset.source}" width="800" height="600">
-`);
+	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
+		onShow: () => {
+			addEventListener('keydown', onEscapePress);
+		},
+
+		onClose: () => {
+			removeEventListener('keydown', onEscapePress);
+		},
+	});
 }
 
 // Закриття модалки натисканням Escape
@@ -54,17 +59,6 @@ function onEscapePress(e) {
 		return;
 	}
 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
-	onCloseModal();
-}
-
-// Додавання обробника подій після відкриття модального вікна
-function onOpenModal() {
-	addEventListener('keydown', onEscapePress);
-}
-
-// Видалення обробника подій після закриття модального вікна
-function onCloseModal() {
-	removeEventListener('keydown', onEscapePress);
 }
 
 // Реалізація лінивого завантаження
