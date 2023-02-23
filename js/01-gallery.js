@@ -9,7 +9,26 @@ galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 // Додавання обробника подій
 galleryContainer.addEventListener('click', onImageClick);
 
-// Створення розмітки
+// // Створення звичайної розмітки
+// function createCardsMarkup(array) {
+// 	return array
+// 		.map(
+// 			({ original, preview, description }) =>
+// 				`<div class="gallery__item">
+//           <a class="gallery__link" href="${original}">
+//             <img
+//               class="gallery__image"
+//               src="${preview}"
+//               data-source="${original}"
+//               alt="${description}"
+//             />
+//           </a>
+//         </div>`
+// 		)
+// 		.join('');
+// }
+
+// Створення розмітки з урахуванням вимог лінивого завантаження
 function createCardsMarkup(array) {
 	return array
 		.map(
@@ -17,8 +36,9 @@ function createCardsMarkup(array) {
 				`<div class="gallery__item">
           <a class="gallery__link" href="${original}">
             <img
-              class="gallery__image"
-              src="${preview}"
+              loading="lazy"
+              class="gallery__image lazyload"
+              data-src="${preview}"
               data-source="${original}"
               alt="${description}"
             />
@@ -26,6 +46,25 @@ function createCardsMarkup(array) {
         </div>`
 		)
 		.join('');
+}
+
+// Реалізація лінивого завантаження
+if ('loading' in HTMLImageElement.prototype) {
+	console.log('yes');
+
+	const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+	lazyImages.forEach(img => {
+		img.src = img.dataset.src;
+	});
+} else {
+	const script = document.createElement('script');
+	script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+	script.integrity =
+		'sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==';
+	script.crossorigin = 'anonymous';
+	script.referrerpolicy = 'no-referrer';
+	document.body.appendChild(script);
 }
 
 // Відкриття модалки
@@ -61,8 +100,6 @@ function onEscapePress(e) {
 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
 }
 
-// Реалізація лінивого завантаження
-
 // Віріант 2, працює
 
 // // Відкриття модалки
@@ -93,11 +130,11 @@ function onEscapePress(e) {
 // 	// modalEl = basicLightbox.create(
 // 	// 	`<img src="${e.target.dataset.source}" width="800" height="600">`,
 // 	// 	{
-// 	// 		onShow: () => {
+// 	// 		onShow: (modalEl) => {
 // 	// 			addEventListener('keydown', onEscapePress);
 // 	// 		},
 
-// 	// 		onClose: () => {
+// 	// 		onClose: (modalEl) => {
 // 	// 			removeEventListener('keydown', onEscapePress);
 // 	// 		},
 // 	// 	}
