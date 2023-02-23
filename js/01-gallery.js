@@ -50,8 +50,6 @@ function createCardsMarkup(array) {
 
 // Реалізація лінивого завантаження
 if ('loading' in HTMLImageElement.prototype) {
-	console.log('yes');
-
 	const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 
 	lazyImages.forEach(img => {
