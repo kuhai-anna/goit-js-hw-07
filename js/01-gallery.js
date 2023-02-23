@@ -111,35 +111,25 @@ function onEscapePress(e) {
 // 	if (!isImageEl) {
 // 		return;
 // 	}
-
-// 	createModalImg(e).show();
+// 	createModalImg(e);
 // }
 
 // let modalEl;
 
 // function createModalImg(e) {
-// 	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
-// 		onShow: () => {
-// 			addEventListener('keydown', onEscapePress);
-// 		},
+// 	modalEl = basicLightbox.create(
+// 		`<img src="${e.target.dataset.source}" width="800" height="600">`,
+// 		{
+// 			onShow: modalEl => {
+// 				addEventListener('keydown', onEscapePress);
+// 			},
 
-// 		onClose: () => {
-// 			removeEventListener('keydown', onEscapePress);
-// 		},
-// 	});
-// 	// modalEl = basicLightbox.create(
-// 	// 	`<img src="${e.target.dataset.source}" width="800" height="600">`,
-// 	// 	{
-// 	// 		onShow: (modalEl) => {
-// 	// 			addEventListener('keydown', onEscapePress);
-// 	// 		},
-
-// 	// 		onClose: (modalEl) => {
-// 	// 			removeEventListener('keydown', onEscapePress);
-// 	// 		},
-// 	// 	}
-// 	// );
-// 	// modalEl.show();
+// 			onClose: modalEl => {
+// 				removeEventListener('keydown', onEscapePress);
+// 			},
+// 		}
+// 	);
+// 	modalEl.show();
 // }
 
 // // Закриття модалки натисканням Escape
@@ -147,43 +137,5 @@ function onEscapePress(e) {
 // 	if (e.code !== 'Escape') {
 // 		return;
 // 	}
-// 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
-// 	// createModalImg(e).close();
-// }
-
-// Віріант 3, не працює
-
-// Відкриття модалки
-// function onImageClick(e) {
-// 	e.preventDefault();
-
-// 	const isImageEl = e.target.classList.contains('gallery__image');
-
-// 	if (!isImageEl) {
-// 		return;
-// 	}
-
-// 	createModalImg(e).show();
-// }
-
-// let modalEl;
-
-// function createModalImg(e) {
-// 	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
-// 		onShow: () => {
-// 			addEventListener('keydown', onEscapePress);
-// 		},
-
-// 		onClose: () => {
-// 			removeEventListener('keydown', onEscapePress);
-// 		},
-// 	});
-// }
-
-// // Закриття модалки натисканням Escape
-// function onEscapePress(e) {
-// 	if (e.code !== 'Escape') {
-// 		return;
-// 	}
-// 	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
+// 	modalEl.close();
 // }
