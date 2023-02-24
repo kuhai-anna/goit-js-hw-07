@@ -9,25 +9,6 @@ galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
 // Додавання обробника подій
 galleryContainer.addEventListener('click', onImageClick);
 
-// // Створення звичайної розмітки
-// function createCardsMarkup(array) {
-// 	return array
-// 		.map(
-// 			({ original, preview, description }) =>
-// 				`<div class="gallery__item">
-//           <a class="gallery__link" href="${original}">
-//             <img
-//               class="gallery__image"
-//               src="${preview}"
-//               data-source="${original}"
-//               alt="${description}"
-//             />
-//           </a>
-//         </div>`
-// 		)
-// 		.join('');
-// }
-
 // Створення розмітки з урахуванням вимог лінивого завантаження
 function createCardsMarkup(array) {
 	return array
@@ -49,11 +30,14 @@ function createCardsMarkup(array) {
 }
 
 // Реалізація лінивого завантаження
+// В Safari працює, а в Chrome - ні
 if ('loading' in HTMLImageElement.prototype) {
 	const lazyImages = document.querySelectorAll('img[loading="lazy"]');
 
 	lazyImages.forEach(img => {
 		img.src = img.dataset.src;
+		// img.width = '372';
+		// img.height = '240';
 	});
 } else {
 	const script = document.createElement('script');
@@ -62,6 +46,7 @@ if ('loading' in HTMLImageElement.prototype) {
 		'sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==';
 	script.crossorigin = 'anonymous';
 	script.referrerpolicy = 'no-referrer';
+
 	document.body.appendChild(script);
 }
 
@@ -74,20 +59,26 @@ function onImageClick(e) {
 	if (!isImageEl) {
 		return;
 	}
-	createModalImg(e).show();
+	createModalImg(e);
 }
 
-// Створення модального вікна з відповідним зображенням
-function createModalImg(e) {
-	return basicLightbox.create(`<img src="${e.target.dataset.source}" width="800" height="600">`, {
-		onShow: () => {
-			addEventListener('keydown', onEscapePress);
-		},
+// Створення глобальної змінної для зберігання елементу модального вікна
+let modalEl;
 
-		onClose: () => {
-			removeEventListener('keydown', onEscapePress);
-		},
-	});
+function createModalImg(e) {
+	modalEl = basicLightbox.create(
+		`<img src="${e.target.dataset.source}" width="800" height="600">`,
+		{
+			onShow: () => {
+				addEventListener('keydown', onEscapePress);
+			},
+
+			onClose: () => {
+				removeEventListener('keydown', onEscapePress);
+			},
+		}
+	);
+	modalEl.show();
 }
 
 // Закриття модалки натисканням Escape
@@ -95,45 +86,5 @@ function onEscapePress(e) {
 	if (e.code !== 'Escape') {
 		return;
 	}
-	createModalImg(e).close(() => console.log('lightbox not visible anymore'));
+	modalEl.close();
 }
-
-// Віріант 2, працює
-
-// // Відкриття модалки
-// function onImageClick(e) {
-// 	e.preventDefault();
-
-// 	const isImageEl = e.target.classList.contains('gallery__image');
-
-// 	if (!isImageEl) {
-// 		return;
-// 	}
-// 	createModalImg(e);
-// }
-
-// let modalEl;
-
-// function createModalImg(e) {
-// 	modalEl = basicLightbox.create(
-// 		`<img src="${e.target.dataset.source}" width="800" height="600">`,
-// 		{
-// 			onShow: modalEl => {
-// 				addEventListener('keydown', onEscapePress);
-// 			},
-
-// 			onClose: modalEl => {
-// 				removeEventListener('keydown', onEscapePress);
-// 			},
-// 		}
-// 	);
-// 	modalEl.show();
-// }
-
-// // Закриття модалки натисканням Escape
-// function onEscapePress(e) {
-// 	if (e.code !== 'Escape') {
-// 		return;
-// 	}
-// 	modalEl.close();
-// }
