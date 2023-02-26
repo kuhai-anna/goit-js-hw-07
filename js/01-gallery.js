@@ -36,8 +36,8 @@ if ('loading' in HTMLImageElement.prototype) {
 
 	lazyImages.forEach(img => {
 		img.src = img.dataset.src;
-		// img.width = '372';
-		// img.height = '240';
+		img.width = '372';
+		img.height = '240';
 	});
 } else {
 	const script = document.createElement('script');
