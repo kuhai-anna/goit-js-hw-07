@@ -19,7 +19,7 @@ function createCardsMarkup(array) {
             <img
               loading="lazy"
               class="gallery__image lazyload"
-              data-src="${preview}"
+							data-src="${preview}"
               data-source="${original}"
               alt="${description}"
             />
