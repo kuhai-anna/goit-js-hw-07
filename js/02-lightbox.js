@@ -12,7 +12,7 @@ function createCardsMarkup(array) {
 		.map(
 			({ original, preview, description }) =>
 				`<a class="gallery__item" href="${original}">
-          <img loading="lazy" data-src="${preview}" class="gallery__image lazyload" src="${preview}" alt="${description}" />
+          <img loading="lazy" data-src="${preview}" class="gallery__image lazyload" alt="${description}" />
         </a>`
 		)
 		.join('');
